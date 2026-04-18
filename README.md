@@ -24,7 +24,8 @@ This project is a database-driven application designed to collect and manage use
 
 ## 📸 Screenshots
 
-(Add your UI images here)
+<img width="991" height="447" alt="image" src="https://github.com/user-attachments/assets/e1774714-b02e-4e1f-8709-3472dbe668e8" />
+
 
 ## 📂 Database Schema
 
