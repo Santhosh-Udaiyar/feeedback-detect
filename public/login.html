@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In / Register — FeedbackHub</title>
+  <meta name="description" content="Login or create a new FeedbackHub account to start submitting feedback." />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body { display: flex; flex-direction: column; }
+
+    .auth-wrapper {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 2rem 1rem;
+    }
+
+    .auth-box {
+      width: 100%; max-width: 440px;
+      position: relative; z-index: 1;
+    }
+
+    .auth-logo {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 2rem;
+      text-decoration: none;
+    }
+    .auth-logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 24px rgba(99,102,241,0.4);
+    }
+    .auth-logo-text { font-size: 1.4rem; font-weight: 800; }
+
+    .auth-heading {
+      font-size: 1.75rem; font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .auth-sub {
+      color: var(--text-muted); font-size: 0.9rem;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Tab switcher */
+    .auth-tabs {
+      display: flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+    }
+    .auth-tab {
+      flex: 1; padding: 0.6rem;
+      background: none; border: none; border-radius: 10px;
+      color: var(--text-muted); font-size: 0.875rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition);
+      font-family: 'Inter', sans-serif;
+    }
+    .auth-tab.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+    }
+
+    /* Password visibility toggle */
+    .input-wrapper { position: relative; }
+    .input-wrapper .form-control { padding-right: 3rem; }
+    .toggle-pw {
+      position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--text-dim); cursor: pointer;
+      font-size: 1rem; transition: var(--transition);
+    }
+    .toggle-pw:hover { color: var(--text-muted); }
+
+    /* Password strength */
+    .pw-strength { margin-top: 0.5rem; }
+    .pw-strength-bar {
+      height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .pw-strength-fill {
+      height: 100%; border-radius: 2px;
+      transition: width 0.4s, background 0.4s;
+      width: 0;
+    }
+    .pw-strength-text { font-size: 0.75rem; margin-top: 4px; }
+
+    .auth-divider {
+      display: flex; align-items: center; gap: 1rem;
+      color: var(--text-dim); font-size: 0.8rem;
+      margin: 1.25rem 0;
+    }
+    .auth-divider::before,
+    .auth-divider::after { content: ''; flex: 1; border-top: 1px solid var(--border-light); }
+
+    .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted); }
+    .auth-footer a { color: var(--primary-light); text-decoration: none; font-weight: 600; }
+
+    #msgBox { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+
+  <div class="auth-wrapper">
+    <div class="auth-box">
+      <a href="/" class="auth-logo">
+        <div class="auth-logo-icon">💬</div>
+        <div class="auth-logo-text">FeedbackHub</div>
+      </a>
+
+      <h1 class="auth-heading" id="authHeading">Welcome back!</h1>
+      <p class="auth-sub" id="authSub">Sign in to your account to continue.</p>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Message -->
+      <div id="msgBox"></div>
+
+      <!-- Card -->
+      <div class="card">
+        <!-- Login Form -->
+        <form id="loginForm" autocomplete="on">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" class="form-control"
+                   placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="loginPassword" class="form-control"
+                     placeholder="••••••••" autocomplete="current-password" required />
+              <button type="button" class="toggle-pw" onclick="togglePw('loginPassword', this)">👁</button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="hidden" autocomplete="on">
+          <div class="form-group">
+            <label class="form-label" for="regName">Full Name</label>
+            <input type="text" id="regName" class="form-control"
+                   placeholder="Alex Johnson" autocomplete="name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email Address</label>
+            <input type="email" id="regEmail" class="form-control"
+                   placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="regPassword" class="form-control"
+                     placeholder="Min 6 chars, 1 uppercase, 1 number"
+                     autocomplete="new-password" required
+                     oninput="checkStrength(this.value)" />
+              <button type="button" class="toggle-pw" onclick="togglePw('regPassword', this)">👁</button>
+            </div>
+            <div class="pw-strength">
+              <div class="pw-strength-bar"><div class="pw-strength-fill" id="pwFill"></div></div>
+              <div class="pw-strength-text" id="pwText"></div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="registerBtn">
+            Create Account
+          </button>
+        </form>
+      </div>
+
+      <div class="auth-footer">
+        <span id="authSwitchText">Don't have an account?</span>
+        <a href="#" id="authSwitchLink" onclick="switchTab('register'); return false;">Register here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>
