@@ -19,7 +19,8 @@ This project is a database-driven application designed to collect and manage use
 
 ## 📊 ER Diagram
 
-(Add your ER diagram image here)
+<img width="1050" height="700" alt="image" src="https://github.com/user-attachments/assets/04f84a5b-f0a2-4fe3-8572-7c02c392b1d6" />
+
 
 ## 📸 Screenshots
 
